@@ -1,7 +1,10 @@
 {
   "name": "ds-inline-edit",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "1.0.0",
+  "bugs": {
+    "url" : "https://github.com/IliasDeros/ds-inline-edit/issues"
+  },
+  "description": "EmberJS addon for editing models inline",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -11,11 +14,14 @@
     "start": "ember server",
     "test": "ember try:each"
   },
-  "repository": "",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/IliasDeros/ds-inline-edit"
+  },
   "engines": {
     "node": ">= 0.12.0"
   },
-  "author": "",
+  "author": "Ilias Deros",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",
