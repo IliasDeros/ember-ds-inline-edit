@@ -1,8 +1,8 @@
 {
   "name": "ds-inline-edit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "bugs": {
-    "url" : "https://github.com/IliasDeros/ds-inline-edit/issues"
+    "url": "https://github.com/IliasDeros/ds-inline-edit/issues"
   },
   "description": "EmberJS addon for editing models inline",
   "directories": {
@@ -15,8 +15,8 @@
     "test": "ember try:each"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/IliasDeros/ds-inline-edit"
+    "type": "git",
+    "url": "https://github.com/IliasDeros/ds-inline-edit"
   },
   "engines": {
     "node": ">= 0.12.0"
