@@ -1,27 +1,38 @@
-# Ds-inline-edit
+# DS-inline-edit
 
-This README outlines the details of collaborating on this Ember addon.
+Edit an ember DS.model inline by clicking on it to toggle editor.
+Click outside or press escape to rollback change and cancel edit.
+
+inspired by [ember-inline-edit](https://github.com/swastik/ember-inline-edit)
 
 ## Installation
 
-* `git clone <repository-url>` this repository
-* `cd ds-inline-edit`
-* `npm install`
-* `bower install`
+`ember install ds-inline-edit`
 
-## Running
+## Usage
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+Use the `ds-inline-edit` component and provide it a model with the property to edit/display.
 
-## Running Tests
+```handlebars
+  {{ds-inline-edit
+    model=model
+    prop='name'
+  }}
+```
 
-* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+#### Ember Data Integration
 
-## Building
+This plugin relies on a strict usage of Ember Data. An automatic model update
+is sent upon confirming edit.
 
-* `ember build`
+If the `prop` is an object, the default display is the following property of the model :
+`displayName` > `name` > `id`
 
-For more information on using ember-cli, visit [http://ember-cli.com/](http://ember-cli.com/).
+Only the property identified through `prop` is updated, the rest of the model remains
+uncommited.
+
+#### Keyboard Support
+
+Currently, the only way to confirm an edit is to hit `enter`.
+
+Hitting `esc` or clicking outside the component will also discard the edit.

@@ -1,0 +1,1 @@
+export { default } from 'ds-inline-edit/components/ds-inline-edit'

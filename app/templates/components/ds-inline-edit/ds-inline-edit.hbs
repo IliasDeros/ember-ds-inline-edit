@@ -1,0 +1,11 @@
+{{#if isEditing}}
+  {{#if hasBlock}}
+    {{yield value}}
+  {{else}}
+    {{input type="text" value=value class="form-control"}}
+  {{/if}}
+{{else}}
+  <span title="Click to edit {{prop}}">
+    {{displayValue}}<i class="fa fa-pencil inline-edit"></i>
+  </span>
+{{/if}}
