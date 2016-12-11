@@ -5,6 +5,8 @@ Click outside or press escape to rollback change and cancel edit.
 
 inspired by [ember-inline-edit](https://github.com/swastik/ember-inline-edit)
 
+![Inline Edit Demo](https://github.com/IliasDeros/ds-inline-edit/raw/master/demo.gif)
+
 ## Installation
 
 `ember install ds-inline-edit`
