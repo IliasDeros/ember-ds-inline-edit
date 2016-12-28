@@ -22,6 +22,14 @@ Use the `ds-inline-edit` component and provide it a model with the property to e
   }}
 ```
 
+Customize input template using `#ds-inline-edit` :
+
+```handlebars
+  {{#ds-inline-edit model=person prop='age' as |age|}}
+    {{input type="number" class="form-control" value=age}}
+  {{/ds-inline-edit}}
+```
+
 #### Ember Data Integration
 
 This plugin relies on a strict usage of Ember Data. An automatic model update
