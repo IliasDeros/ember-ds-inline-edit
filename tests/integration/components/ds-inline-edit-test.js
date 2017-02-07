@@ -9,6 +9,8 @@ moduleForComponent('ds-inline-edit', 'DsInlineEdit', {
   beforeEach(){
     this.inject.service('store')
     this.server = startMirage()
+
+    this.CODE_ENTER = 13
   },
 
   afterEach(){
@@ -18,7 +20,6 @@ moduleForComponent('ds-inline-edit', 'DsInlineEdit', {
 
 test('updating a property does not update the rest of the model', function(assert) {
   const done = assert.async()
-  const enterKeyCode = 13
   const { id } = this.server.create('dummy')
 
   Ember.run(() => this.store.findRecord('dummy', id).then(model => renderComponent.call(this, model)))
@@ -48,7 +49,7 @@ test('updating a property does not update the rest of the model', function(asser
 
     // press enter to submit
     const enter = Ember.$.Event('keydown')
-    enter.which = enterKeyCode
+    enter.which = this.CODE_ENTER
     Ember.run(() => this.$('#component').trigger(enter))
 
     // let model.save() update "model"
@@ -102,5 +103,62 @@ test('"displayValue" displayed correctly for object model', function(assert){
         id="component"
       }}
     `)
+  }
+})
+
+test('call "onError" with update error when a server error occurs', function(assert){
+  let calledWith = undefined
+  const expectedErrorMessage = 'Expected error message'
+  const spyFn = params => calledWith = { errors: params }
+
+  this.server.patch('/dummies/:id', { errors: [expectedErrorMessage] }, 500)
+
+  const done = assert.async()
+  const { id } = this.server.create('dummy')
+
+  Ember.run(() => this.store.findRecord('dummy', id).then(model => renderComponent.call(this, model)))
+
+  function renderComponent(model){
+    this.setProperties({
+      model,
+      onError: spyFn
+    })
+
+    this.render(hbs`
+      {{ds-inline-edit
+        model=model
+        prop="description"
+        id="component"
+        onError=onError
+      }}
+    `)
+
+    // click input to toggle edit mode
+    Ember.run(() => this.$('#component').click())
+
+    // enter new value and trigger ember "value" observers
+    Ember.run(() => this.$('#component input')
+      .val('new description')
+      .trigger('change')
+    )
+
+    // update another unrelated value
+    model.set('name', 'new name')
+
+    // press enter to submit
+    const enter = Ember.$.Event('keydown')
+    enter.which = this.CODE_ENTER
+    Ember.run(() => this.$('#component').trigger(enter))
+
+    // let model.save() update "model"
+    Ember.run.next(verifyError.bind(this))
+
+    function verifyError(){
+      // let model.save().catch throw error
+      Ember.run.next(() => {
+        assert.deepEqual(calledWith && calledWith.errors.errors, [expectedErrorMessage], '"onError" called with server error')
+        done()
+      })
+    }
   }
 })

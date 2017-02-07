@@ -1,5 +1,3 @@
-# DS-inline-edit
-
 Edit an ember DS.model inline by clicking on it to toggle editor.
 Click outside or press escape to rollback change and cancel edit.
 
@@ -19,6 +17,7 @@ Use the `ds-inline-edit` component and provide it a model with the property to e
   {{ds-inline-edit
     model=model
     prop='name'
+    onError='onError'
   }}
 ```
 
@@ -46,3 +45,6 @@ uncommited.
 Currently, the only way to confirm an edit is to hit `enter`.
 
 Hitting `esc` or clicking outside the component will also discard the edit.
+
+#### Error Handling
+When an error occurs, an `onError` action is sent.

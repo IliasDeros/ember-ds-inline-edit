@@ -80,10 +80,10 @@ export default Ember.Component.extend({
       })
 
       model.save()
-        .catch(error => {
+        .catch(error => { Ember.run(() => {
           model.set(prop, previousValue)
-          console.error(error)
-        })
+          this.onError ? this.sendAction('onError', error) : console.error(error)
+        })})
         .finally(() => {
           Object.keys(modifiedAttrs).forEach(a => {
             model.set(a, modifiedAttrs[a])
