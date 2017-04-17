@@ -106,6 +106,61 @@ test('"displayValue" displayed correctly for object model', function(assert){
   }
 })
 
+test('call "onUpdate" with model on successful update', function(assert){
+  let calledWith = undefined
+  const expectedErrorMessage = 'Expected error message'
+  const spyFn = param => calledWith = { model: param }
+
+  const done = assert.async()
+  const { id } = this.server.create('dummy')
+
+  Ember.run(() => this.store.findRecord('dummy', id).then(model => renderComponent.call(this, model)))
+
+  function renderComponent(model){
+    this.setProperties({
+      model,
+      onUpdate: spyFn
+    })
+
+    this.render(hbs`
+      {{ds-inline-edit
+        model=model
+        prop="description"
+        id="component"
+        onUpdate=onUpdate
+      }}
+    `)
+
+    // click input to toggle edit mode
+    Ember.run(() => this.$('#component').click())
+
+    // enter new value and trigger ember "value" observers
+    Ember.run(() => this.$('#component input')
+      .val('new description')
+      .trigger('change')
+    )
+
+    // update another unrelated value
+    model.set('name', 'new name')
+
+    // press enter to submit
+    const enter = Ember.$.Event('keydown')
+    enter.which = this.CODE_ENTER
+    Ember.run(() => this.$('#component').trigger(enter))
+
+    // let model.save() update "model"
+    Ember.run.next(verifyError.bind(this))
+
+    function verifyError(){
+      // let model.save().then call "onUpdate"
+      Ember.run.next(() => {
+        assert.deepEqual(calledWith && calledWith.model, model, '"onUpdate" called with model')
+        done()
+      })
+    }
+  }
+})
+
 test('call "onError" with update error when a server error occurs', function(assert){
   let calledWith = undefined
   const expectedErrorMessage = 'Expected error message'

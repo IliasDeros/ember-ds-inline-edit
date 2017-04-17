@@ -80,6 +80,7 @@ export default Ember.Component.extend({
       })
 
       model.save()
+        .then(updatedModel => this.onUpdate && this.onUpdate(updatedModel))
         .catch(error => { Ember.run(() => {
           model.set(prop, previousValue)
           this.onError ? this.sendAction('onError', error) : console.error(error)

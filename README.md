@@ -17,7 +17,8 @@ Use the `ds-inline-edit` component and provide it a model with the property to e
   {{ds-inline-edit
     model=model
     prop='name'
-    onError='onError'
+    onError=(action send 'onError')
+    onUpdate=(action send 'onUpdate')
   }}
 ```
 
@@ -40,6 +41,8 @@ If the `prop` is an object, the default display is the following property of the
 Only the property identified through `prop` is updated, the rest of the model remains
 uncommited.
 
+When an update is successful, the `onUpdate` function is called with the updated model.
+
 #### Keyboard Support
 
 Currently, the only way to confirm an edit is to hit `enter`.
@@ -47,4 +50,4 @@ Currently, the only way to confirm an edit is to hit `enter`.
 Hitting `esc` or clicking outside the component will also discard the edit.
 
 #### Error Handling
-When an error occurs, an `onError` action is sent.
+When an error occurs, an `onError` action is executed.
