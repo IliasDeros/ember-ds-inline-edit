@@ -45,9 +45,8 @@ When an update is successful, the `onUpdate` function is called with the updated
 
 #### Keyboard Support
 
-Currently, the only way to confirm an edit is to hit `enter`.
-
-Hitting `esc` or clicking outside the component will also discard the edit.
+Hit `enter` to confirm changes.
+Hit `esc` or click outside the component to discard the changes.
 
 #### Error Handling
 When an error occurs, an `onError` action is executed.
