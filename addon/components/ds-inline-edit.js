@@ -23,6 +23,8 @@ export default Ember.Component.extend({
   }),
 
   didInsertElement(){
+    this._super(...arguments)
+
     // handle click inside and outside component
     Ember.$(document).on(`click.${Ember.guidFor(this)}`, e => {
       if (this.get('disabled')) { return }
@@ -43,6 +45,7 @@ export default Ember.Component.extend({
   },
 
   willDestroyElement(){
+    this._super(...arguments)
     Ember.$(document).off(`click.${Ember.guidFor(this)}`)
   },
 
