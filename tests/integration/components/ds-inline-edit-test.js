@@ -11,6 +11,9 @@ moduleForComponent('ds-inline-edit', 'DsInlineEdit', {
     this.server = startMirage()
 
     this.CODE_ENTER = 13
+
+    // ignore expected response error
+    Ember.RSVP.reject = function(){}
   },
 
   afterEach(){

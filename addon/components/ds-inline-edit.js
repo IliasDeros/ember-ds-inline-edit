@@ -83,10 +83,11 @@ export default Ember.Component.extend({
       })
 
       return model.save()
-        .then(updatedModel => this.onUpdate && this.onUpdate(updatedModel))
+        .then(updatedModel => (this.onUpdate && this.onUpdate(updatedModel), Ember.RSVP.resolve(updatedModel)))
         .catch(error => { Ember.run(() => {
           model.set(prop, previousValue)
           this.onError ? this.sendAction('onError', error) : console.error(error)
+          return Ember.RSVP.reject(error)
         })})
         .finally(() => {
           Object.keys(modifiedAttrs).forEach(a => {
