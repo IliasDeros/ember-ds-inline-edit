@@ -82,7 +82,7 @@ export default Ember.Component.extend({
         modifiedAttrs[a] = modifiedAttr
       })
 
-      model.save()
+      return model.save()
         .then(updatedModel => this.onUpdate && this.onUpdate(updatedModel))
         .catch(error => { Ember.run(() => {
           model.set(prop, previousValue)
