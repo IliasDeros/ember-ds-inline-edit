@@ -86,7 +86,7 @@ export default Ember.Component.extend({
         .then(updatedModel => this.onUpdate && this.onUpdate(updatedModel))
         .catch(error => {
           model.set(prop, previousValue)
-          this.onError ? this.sendAction('onError', error) : console.error(error)
+          this.onError ? this.onError(error) : console.error(error)
         })
         .finally(() => {
           Object.keys(modifiedAttrs).forEach(a => {
