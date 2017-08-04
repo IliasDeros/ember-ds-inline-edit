@@ -63,14 +63,26 @@ export default Ember.Component.extend({
     }
   },
 
+  onEditSuccess(){
+    this._super(...arguments)
+    this.onUpdate && this.onUpdate(...arguments)
+  },
+
+  onEditError(error, previousValue){
+    this._super(...arguments)
+    const prop = this.get('prop')
+
+    this.set(`model.${prop}`, previousValue)
+    this.onError ? this.onError(...arguments) : console.error(error)
+  },
+
   actions: {
     confirmEdit(){
-      const model = this.get('model')
-      const prop = this.get('prop')
+      const { model, prop, value } = this.getProperties('model', 'prop', 'value')
       const previousValue = model.get(prop)
 
       this.set('isEditing', false)
-      model.set(prop, this.get('value'))
+      model.set(prop, value)
 
       // only update the currently edited value
       const modifiedAttrs = {}
@@ -83,11 +95,8 @@ export default Ember.Component.extend({
       })
 
       return model.save()
-        .then(updatedModel => this.onUpdate && this.onUpdate(updatedModel))
-        .catch(error => Ember.run(() => {
-          model.set(prop, previousValue)
-          this.onError ? this.onError(error) : console.error(error)
-        }))
+        .then(updatedModel => this.onEditSuccess(updatedModel))
+        .catch(error => this.onEditError(error, previousValue))
         .finally(() => {
           Object.keys(modifiedAttrs).forEach(a => {
             model.set(a, modifiedAttrs[a])

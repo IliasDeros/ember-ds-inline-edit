@@ -43,6 +43,18 @@ uncommited.
 
 When an update is successful, the `onUpdate` function is called with the updated model.
 
+#### Extending this plugin
+
+Feel free to extend `ds-inline-edit` using the following code :
+
+```
+// app/pods/components/ds-inline-edit
+import DsInlineEdit from 'ds-inline-edit/components/ds-inline-edit'
+export default DsInlineEdit.extend({})
+```
+
+You can override the `onEditSuccess` and `onEditError` functions for custom logic on all updates.
+
 #### Keyboard Support
 
 Hit `enter` to confirm changes.
