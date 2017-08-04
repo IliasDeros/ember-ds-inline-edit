@@ -210,6 +210,8 @@ test('call "onError" with update error when a server error occurs', function(ass
     function verifyError(){
       // let model.save().catch throw error
       Ember.run.next(() => {
+        assert.notEqual(model.get('description'), 'new description', 'description field is reverted')
+        assert.equal(model.get('name'), 'new name', 'name field is not reverted since it wasnt the field being edited')
         assert.deepEqual(calledWith && calledWith.errors.errors, [expectedErrorMessage], '"onError" called with server error')
         done()
       })
