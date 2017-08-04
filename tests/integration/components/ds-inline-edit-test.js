@@ -110,8 +110,7 @@ test('"displayValue" displayed correctly for object model', function(assert){
 })
 
 test('call "onUpdate" with model on successful update', function(assert){
-  let calledWith = undefined
-  const expectedErrorMessage = 'Expected error message'
+  let calledWith
   const spyFn = param => calledWith = { model: param }
 
   const done = assert.async()
@@ -165,7 +164,7 @@ test('call "onUpdate" with model on successful update', function(assert){
 })
 
 test('call "onError" with update error when a server error occurs', function(assert){
-  let calledWith = undefined
+  let calledWith
   const expectedErrorMessage = 'Expected error message'
   const spyFn = params => calledWith = { errors: params }
 

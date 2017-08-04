@@ -15,21 +15,3 @@ export function startMirage(env = ENV) {
 
   return new Server(options)
 }
-
-function _shouldUseMirage(env, addonConfig) {
-  let userDeclaredEnabled = typeof addonConfig.enabled !== 'undefined'
-  let defaultEnabled = _defaultEnabled(env, addonConfig)
-
-  return userDeclaredEnabled ? addonConfig.enabled : defaultEnabled
-}
-
-/*
-  Returns a boolean specifying the default behavior for whether
-  to initialize Mirage.
-*/
-function _defaultEnabled(env, addonConfig) {
-  let usingInDev = env === 'development' && !addonConfig.usingProxy
-  let usingInTest = env === 'test'
-
-  return usingInDev || usingInTest
-}
