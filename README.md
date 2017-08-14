@@ -17,6 +17,7 @@ Use the `ds-inline-edit` component and provide it a model with the property to e
   {{ds-inline-edit
     model=model
     prop='name'
+    customUpdate=(action updateModelName)
     onError=(action send 'onError')
     onUpdate=(action send 'onUpdate')
   }}
@@ -32,8 +33,8 @@ Customize input template using `#ds-inline-edit` :
 
 #### Ember Data Integration
 
-This plugin relies on a strict usage of Ember Data. An automatic model update
-is sent upon confirming edit.
+By default, this plugin relies on a strict usage of Ember Data. An automatic model update is sent upon confirming edit. This behavior can be overriden by passing in a _customUpdate_ action :
+`customUpdate(value, model, prop)`
 
 If the `prop` is an object, the default display is the following property of the model :
 `displayName` > `name` > `id`
@@ -53,7 +54,9 @@ import DsInlineEdit from 'ds-inline-edit/components/ds-inline-edit'
 export default DsInlineEdit.extend({})
 ```
 
-You can override the `onEditSuccess` and `onEditError` functions for custom logic on all updates.
+You can override the following functions :
+`onEditSuccess()` - Called when the model is updated successfully
+`onEditError(error)` - Called on update failure (due to error from network or customUpdate)
 
 #### Keyboard Support
 

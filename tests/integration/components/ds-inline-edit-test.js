@@ -106,6 +106,58 @@ test('"displayValue" displayed correctly for object model', function(assert){
   }
 })
 
+test('call "customUpdate" when defined', function(assert){
+  const done = assert.async()
+  const { id } = this.server.create('dummy')
+
+  Ember.run(() => this.store.findRecord('dummy', id).then(model => renderComponent.call(this, model)))
+
+  function renderComponent(model){
+    let customUpdateArgs = []
+
+    this.setProperties({
+      model,
+      customUpdate: function(){ customUpdateArgs = arguments }
+    })
+
+    this.render(hbs`
+      {{ds-inline-edit
+        model=model
+        prop="description"
+        id="component"
+        customUpdate=(action customUpdate)
+      }}
+    `)
+
+    // click input to toggle edit mode
+    Ember.run(() => this.$('#component').click())
+
+    // enter new value and trigger ember "value" observers
+    Ember.run(() => this.$('#component input')
+      .val('new description')
+      .trigger('change')
+    )
+
+    // press enter to submit
+    const enter = Ember.$.Event('keydown')
+    enter.which = this.CODE_ENTER
+    Ember.run(() => this.$('#component').trigger(enter))
+
+    // let model.save() potentially update "model"
+    Ember.run.next(verifyCustomFunctionCall.bind(this))
+
+    function verifyCustomFunctionCall(){
+      assert.notEqual(model.get('description'), 'new description', 'description is not updated')
+
+      let [value, modelArg, propertyArg] = customUpdateArgs
+      assert.equal(value, 'new description', 'value is passed as first argument to "customUpdate"')
+      assert.equal(modelArg, model, 'model is passed as second argument to "customUpdate"')
+      assert.equal(propertyArg, 'description', 'property is passed as third argument to "customUpdate"')
+      done()
+    }
+  }
+})
+
 test('call "onUpdate" with model on successful update', function(assert){
   let calledWith
   const spyFn = param => calledWith = { model: param }

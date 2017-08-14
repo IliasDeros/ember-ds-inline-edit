@@ -78,10 +78,13 @@ export default Ember.Component.extend({
 
   actions: {
     confirmEdit(){
+      this.set('isEditing', false)
+
       const { model, prop, value } = this.getProperties('model', 'prop', 'value')
+      if (this.customUpdate) { return this.customUpdate(value, model, prop) }
+
       const previousValue = model.get(prop)
 
-      this.set('isEditing', false)
       model.set(prop, value)
 
       // only update the currently edited value
