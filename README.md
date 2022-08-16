@@ -1,3 +1,5 @@
+[![npm badge](https://img.shields.io/npm/v/ember-ds-inline-edit)](https://www.npmjs.com/package/ember-ds-inline-edit)
+
 Edit an ember DS.model inline by clicking on it to toggle editor.
 Click outside or press escape to rollback change and cancel edit.
 
